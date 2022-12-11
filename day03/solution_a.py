@@ -3,14 +3,14 @@ import sys
 rucksacks = []
 
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        rucksack_total = l.strip()
+    for line in f:
+        rucksack_total = line.strip()
         item_len = len(rucksack_total) // 2
         rucksacks.append([rucksack_total[:item_len], rucksack_total[item_len:]])
 
 common_items = []
-for l, r in rucksacks:
-    common = list(set(list(l)).intersection(set(list(r))))
+for line, r in rucksacks:
+    common = list(set(list(line)).intersection(set(list(r))))
     common_items += common
 
 total_priority = 0
