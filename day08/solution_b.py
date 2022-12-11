@@ -1,16 +1,14 @@
 import sys
 import numpy as np
 
-forest = []
+forest_list = []
 
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        line = [int(c) for c in l.strip()]
-        forest.append(line)
-forest = np.array(forest)
-print(forest.shape)
+    for line in f:
+        forest_line = [int(c) for c in line.strip()]
+        forest_list.append(forest_line)
+forest = np.array(forest_list)
 
-print(forest)
 left_visible = np.zeros_like(forest)
 for i in range(1, forest.shape[1]):
     for j in range(forest.shape[0]):

@@ -1,16 +1,15 @@
 import sys
 import numpy as np
 
-forest = []
+forest_list = []
 
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        line = [int(c) for c in l.strip()]
-        forest.append(line)
+    for line in f:
+        forest_line = [int(c) for c in line.strip()]
+        forest_list.append(forest_line)
 
 
-forest = np.array(forest)
-print(forest)
+forest = np.array(forest_list)
 left_max = np.zeros_like(forest)
 left_max[:, 0] = forest[:, 0]
 visible_left = np.zeros_like(forest, dtype=bool)
@@ -36,7 +35,6 @@ for i in range(1, forest.shape[0]):
     top_max[i, :] = np.max(np.array([forest[i, :], top_max[i - 1, :]]), axis=0)
     visible_top[i, :] = forest[i, :] > top_max[i - 1, :]
 
-print(visible_top)
 
 bot_col = forest.shape[0] - 1
 bot_max = np.zeros_like(forest)
@@ -47,7 +45,5 @@ for i in range(forest.shape[0] - 2, -1, -1):
     bot_max[i, :] = np.max(np.array([forest[i, :], bot_max[i + 1, :]]), axis=0)
     visible_bot[i, :] = forest[i, :] > bot_max[i + 1, :]
 
-print(visible_top)
 visible = visible_left | visible_right | visible_top | visible_bot
-print(visible)
 print(np.sum(visible))
