@@ -1,13 +1,14 @@
 import sys
+from typing import List
 
 cycles = 0
 var_x = 1
 
-crt = []
+crt: List[List[str]] = []
 
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        instruction = l.strip().split(" ")
+    for line in f:
+        instruction = line.strip().split(" ")
         if cycles % 40 == 0:
             crt.append([])
             cycles = cycles % 40
@@ -28,5 +29,5 @@ with open(sys.path[0] + "/input.txt", "r") as f:
             cycles += 1
             var_x += int(instruction[1])
 
-for l in crt:
-    print("".join(l))
+for crt_line in crt:
+    print("".join(crt_line))

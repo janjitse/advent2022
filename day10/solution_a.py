@@ -6,8 +6,8 @@ var_x = 1
 signal_strength = 0
 to_add = [20, 60, 100, 140, 180, 220]
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        instruction = l.strip().split(" ")
+    for line in f:
+        instruction = line.strip().split(" ")
 
         cycles += 1
         if cycles in to_add:
