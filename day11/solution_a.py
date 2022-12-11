@@ -1,7 +1,6 @@
 from operator import add, mul
 from functools import reduce
-from collections import OrderedDict
-from typing import Callable, List
+from typing import Callable, OrderedDict, List
 import re
 import sys
 
@@ -12,10 +11,10 @@ class Monkey:
         name: str,
         items: List[int],
         operation: Callable[[int, int], int],
-        add: int,
+        add: str,
         divisor: int,
-        true_cond,
-        false_cond,
+        true_cond: str,
+        false_cond: str,
     ):
         # self.name = name
         self.items = items.copy()
@@ -26,7 +25,7 @@ class Monkey:
         self.false_condition = false_cond
         self.items_inspected = 0
 
-    def operation(self, worry_level):
+    def operation(self, worry_level: int) -> int:
         if self._add.strip() == "old":
             return self._operator(worry_level, worry_level)
         else:
@@ -45,20 +44,21 @@ monkey_strings = total.split("\n\n")
 
 op_dict = {"+": add, "*": mul}
 
-monkeys = OrderedDict()
+monkeys: OrderedDict[str, Monkey] = OrderedDict()
 
-all_divisors = []
+all_divisors: List[int] = []
 
-for monkey in monkey_strings:
-    monkey = monkey.split("\n")
-    name = monkey[0].strip().lower()[:-1]
-    items = [int(d) for d in re.findall("\d+", monkey[1])]
-    op = re.findall("\*|\+", monkey[2])[0]
-    number = monkey[2].split(op)[1]
-    divisor = int(re.findall("\d+", monkey[3])[0])
+for monkey_raw in monkey_strings:
+    monkey_def = monkey_raw.split("\n")
+
+    name = monkey_def[0].strip().lower()[:-1]
+    items = [int(d) for d in re.findall(r"\d+", monkey_def[1])]
+    op = re.findall(r"\*|\+", monkey_def[2])[0]
+    number = monkey_def[2].split(op)[1]
+    divisor = int(re.findall(r"\d+", monkey_def[3])[0])
     all_divisors.append(divisor)
-    true_cond = re.findall("monkey \d+", monkey[4])[0]
-    false_cond = re.findall("monkey \d+", monkey[5])[0]
+    true_cond = re.findall(r"monkey \d+", monkey_def[4])[0]
+    false_cond = re.findall(r"monkey \d+", monkey_def[5])[0]
     monkeys[name] = Monkey(
         name=name,
         items=items,
