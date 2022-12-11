@@ -1,12 +1,14 @@
 import sys
+import numpy as np
+
 
 moves = []
 
 direction_dict = {"U": (1, 0), "D": (-1, 0), "R": (0, 1), "L": (0, -1)}
 
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        direction, nr_steps = l.strip().split(" ")
+    for line in f:
+        direction, nr_steps = line.strip().split(" ")
 
         moves.append((direction, int(nr_steps)))
 pos_h = [0, 0]
@@ -42,7 +44,6 @@ been.add(tuple(tail_positions[-1]))
 
 print(len(been))
 
-import numpy as np
 
 size_x = max(been, key=lambda x: x[0])[0] - min(been, key=lambda x: x[0])[0]
 size_y = max(been, key=lambda x: x[1])[1] - min(been, key=lambda x: x[1])[1]
@@ -51,5 +52,5 @@ midpoints = [size_x // 2, size_y // 2]
 for (x, y) in been:
     array[x - midpoints[0], y - midpoints[1]] = "#"
 
-for l in array:
-    print("".join(l))
+for line in array:
+    print("".join(line))

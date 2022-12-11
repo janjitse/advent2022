@@ -1,13 +1,12 @@
 import sys
-import numpy as np
 
 moves = []
 
 direction_dict = {"U": (1, 0), "D": (-1, 0), "R": (0, 1), "L": (0, -1)}
 
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        direction, nr_steps = l.strip().split(" ")
+    for line in f:
+        direction, nr_steps = line.strip().split(" ")
 
         moves.append((direction, int(nr_steps)))
 pos_h = [0, 0]
