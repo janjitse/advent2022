@@ -1,25 +1,26 @@
 import sys
 import re
+from typing import List
 
-start_board = []
+start_board: List[List[str]] = []
 moves = []
-with open(sys.path[0] + "/input_xlarge.txt", "r") as f:
+with open(sys.path[0] + "/input.txt", "r") as f:
     board = True
     ordA = ord("A")
     ordZ = ord("Z")
-    for l in f:
+    for line in f:
         if not start_board:
-            start_board = [[] for _ in range(0, len(l), 4)]
-        if len(l.strip()) > 0 and board:
-            if len(l) % 4 != 0:
-                l = l[: len(l) // 4 * 4]
-            for k in range(0, len(l), 4):
-                if ordA <= ord(l[k + 1]) <= ordZ:
-                    start_board[k // 4] += l[k + 1 : k + 2]
-        if len(l.strip()) == 0:
+            start_board = [[] for _ in range(0, len(line), 4)]
+        if len(line.strip()) > 0 and board:
+            if len(line) % 4 != 0:
+                line = line[: len(line) // 4 * 4]
+            for k in range(0, len(line), 4):
+                if ordA <= ord(line[k + 1]) <= ordZ:
+                    start_board[k // 4] += line[k + 1 : k + 2]
+        if len(line.strip()) == 0:
             board = False
-        if len(l.strip()) > 0 and not board:
-            to_parse = re.findall(r"\d+", l)
+        if len(line.strip()) > 0 and not board:
+            to_parse = re.findall(r"\d+", line)
             moves.append([int(t) for t in to_parse])
 
 
