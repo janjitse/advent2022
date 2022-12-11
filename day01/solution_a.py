@@ -1,15 +1,16 @@
 import sys
+from typing import List
 
 
-elves_calories = []
+elves_calories: List[List[int]] = []
 elves_total = []
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        l = l.strip()
-        if not elves_calories or len(l) == 0:
+    for line in f:
+        line = line.strip()
+        if not elves_calories or len(line) == 0:
             elves_calories.append([])
-        if len(l) > 0:
-            elves_calories[-1].append(int(l))
+        if len(line) > 0:
+            elves_calories[-1].append(int(line))
         else:
             elves_total.append(sum(elves_calories[-2]))
 elves_total.append(sum(elves_calories[-1]))
