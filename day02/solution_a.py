@@ -1,4 +1,5 @@
 import sys
+from typing import List, Tuple
 
 score_dict = {
     ("A", "X"): 1 + 3,
@@ -12,13 +13,14 @@ score_dict = {
     ("C", "Z"): 3 + 3,
 }
 guide = []
+
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        guide.append(tuple(l.strip().split()))
+    for line in f:
+        guide.append(tuple(line.strip().split(maxsplit=1)))
 
 score = 0
 for g in guide:
-    score += score_dict[g]
+    score += score_dict[g]  # type: ignore
 print(score)
 
 score_dict_b = {
@@ -34,5 +36,5 @@ score_dict_b = {
 }
 score_b = 0
 for g in guide:
-    score_b += score_dict_b[g]
+    score_b += score_dict_b[g]  # type: ignore
 print(score_b)
