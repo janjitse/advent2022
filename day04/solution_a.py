@@ -2,9 +2,9 @@ import sys
 
 assignments = []
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
+    for line in f:
         assignments.append(
-            [[int(m) for m in k.split("-")] for k in l.strip().split(",")]
+            [[int(m) for m in k.split("-")] for k in line.strip().split(",")]
         )
 fully_contained = 0
 overlap = 0
