@@ -1,18 +1,19 @@
 import sys
+from typing import Dict, Union, Optional
 
 
 class Dir:
     def __init__(self, name: str, parent):
-        self.children = {}
+        self.children: Dict[str, Union[Dir, File]] = {}
         self.name = name
         self.parent = parent
-        self._size = None
+        self._size: Optional[int] = None
         if self.parent is not None:
             self.full_name = self.parent.full_name + "/" + self.name
         else:
             self.full_name = self.name
 
-    def size(self):
+    def size(self) -> int:
         if self._size is not None:
             return self._size
         else:
@@ -20,7 +21,7 @@ class Dir:
             self._size = total_size
         return total_size
 
-    def size_less(self, max_size=100_000):
+    def size_less(self, max_size=100_000) -> int:
         children_size = sum([c.size_less(max_size) for c in self.children.values()])
         self_size = self.size()
         if self_size <= max_size:
@@ -29,38 +30,43 @@ class Dir:
 
 
 class File:
-    def __init__(self, name, parent, size):
+    def __init__(self, name: str, parent: Dir, size: int):
         self.name = name
         self._size = size
         self.parent = parent
+        self.full_name = self.parent.full_name + "/" + name
 
-    def size(self):
+    def size(self) -> int:
         return self._size
 
-    def size_less(self, max_size=100_000):
+    def size_less(self, max_size=100_000) -> int:
         return 0
 
 
 directory_dict = {"/": Dir(name="/", parent=None)}
 
 with open(sys.path[0] + "/input.txt", "r") as f:
-    for l in f:
-        if l[:4] == "$ cd":
-            _, _, new_dir = l.strip().split(" ")
+    cur_dir: Dir = directory_dict["/"]
+    for line in f:
+        if line[:4] == "$ cd":
+            _, _, new_dir = line.strip().split(" ")
             if new_dir == "/":
                 cur_dir = directory_dict["/"]
             elif new_dir == "..":
                 cur_dir = cur_dir.parent
             else:
-                cur_dir = cur_dir.children[new_dir]
-        elif l[:4] == "$ ls":
+                child_dir = cur_dir.children[new_dir]
+                assert isinstance(child_dir, Dir)
+                cur_dir = child_dir
+        elif line[:4] == "$ ls":
             continue
-        elif l[:3] == "dir":
-            name = l[4:].strip()
-            cur_dir.children[name] = Dir(name=name, parent=cur_dir)
-            directory_dict[cur_dir.children[name].full_name] = cur_dir.children[name]
+        elif line[:3] == "dir":
+            name = line[4:].strip()
+            found_dir = Dir(name=name, parent=cur_dir)
+            cur_dir.children[name] = found_dir
+            directory_dict[cur_dir.children[name].full_name] = found_dir
         else:  # it's a file
-            size, name = l.strip().split(" ")
+            size, name = line.strip().split(" ")
             file = File(name=name, parent=cur_dir, size=int(size))
             cur_dir.children[name] = file
 
