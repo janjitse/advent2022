@@ -8,7 +8,6 @@ import sys
 class Monkey:
     def __init__(
         self,
-        name: str,
         items: List[int],
         operation: Callable[[int, int], int],
         add: str,
@@ -16,7 +15,6 @@ class Monkey:
         true_cond: str,
         false_cond: str,
     ):
-        # self.name = name
         self.items = items.copy()
         self._operator = operation
         self._add = add
@@ -31,7 +29,7 @@ class Monkey:
         else:
             return self._operator(worry_level, int(self._add))
 
-    def check_op(self, worry_level):
+    def check_op(self, worry_level: int) -> bool:
         self.items_inspected += 1
 
         return worry_level % self._divisor == 0
@@ -60,7 +58,6 @@ for monkey_raw in monkey_strings:
     true_cond = re.findall(r"monkey \d+", monkey_def[4])[0]
     false_cond = re.findall(r"monkey \d+", monkey_def[5])[0]
     monkeys[name] = Monkey(
-        name=name,
         items=items,
         operation=op_dict[op],
         add=number,
@@ -68,7 +65,6 @@ for monkey_raw in monkey_strings:
         true_cond=true_cond,
         false_cond=false_cond,
     )
-worry_level = 0
 
 lcm = reduce(lambda x, y: x * y, all_divisors)
 for round in range(10_000):

@@ -1,15 +1,16 @@
+from __future__ import annotations
 import sys
 from typing import Dict, Union, Optional
 
 
 class Dir:
-    def __init__(self, name: str, parent):
+    def __init__(self, name: str, parent: Optional[Dir]):
         self.children: Dict[str, Union[Dir, File]] = {}
         self.name = name
         self.parent = parent
         self._size: Optional[int] = None
         if self.parent is not None:
-            self.full_name = self.parent.full_name + "/" + self.name
+            self.full_name: str = self.parent.full_name + "/" + self.name
         else:
             self.full_name = self.name
 
@@ -21,7 +22,7 @@ class Dir:
             self._size = total_size
         return total_size
 
-    def size_less(self, max_size=100_000) -> int:
+    def size_less(self, max_size: int = 100_000) -> int:
         children_size = sum([c.size_less(max_size) for c in self.children.values()])
         self_size = self.size()
         if self_size <= max_size:
@@ -39,7 +40,7 @@ class File:
     def size(self) -> int:
         return self._size
 
-    def size_less(self, max_size=100_000) -> int:
+    def size_less(self, max_size: int = 100_000) -> int:
         return 0
 
 
@@ -53,6 +54,7 @@ with open(sys.path[0] + "/input.txt", "r") as f:
             if new_dir == "/":
                 cur_dir = directory_dict["/"]
             elif new_dir == "..":
+                assert isinstance(cur_dir.parent, Dir)
                 cur_dir = cur_dir.parent
             else:
                 child_dir = cur_dir.children[new_dir]

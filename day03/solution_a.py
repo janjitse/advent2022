@@ -16,7 +16,7 @@ for line, r in rucksacks:
 total_priority = 0
 
 
-def priority_calc(c) -> int:
+def priority_calc(c: str) -> int:
     if c.isupper():
         priority = (ord(c) - ord("A") + 1) + 26
     else:
