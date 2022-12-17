@@ -1,7 +1,7 @@
 import sys
 from itertools import cycle
 import numpy as np
-from collections import deque
+from typing import Dict, Tuple
 
 blocks_list = [
     np.array([[1, 1, 1, 1]], dtype=bool),
@@ -22,7 +22,7 @@ moves = cycle(moves_list)
 blocks = cycle(blocks_list)
 highest_rock = 0
 move_idx = 0
-pattern_dict = {}
+pattern_dict: Dict[Tuple[int, int, Tuple[bool, ...]], int] = {}
 height_list = []
 for block_idx in range(max_range):
     block = next(blocks)

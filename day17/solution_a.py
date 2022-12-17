@@ -12,11 +12,11 @@ blocks = cycle(
     ]
 )
 
-with open(sys.path[0] + "/input_small.txt", "r") as f:
-    moves = [-1 if c == "<" else +1 for c in f.read().strip()]
+with open(sys.path[0] + "/input.txt", "r") as f:
+    moves_list = [-1 if c == "<" else +1 for c in f.read().strip()]
 
-print(len(moves))
-moves = cycle(moves)
+print(len(moves_list))
+moves = cycle(moves_list)
 
 
 board = np.zeros((4 * 2022, 7), dtype=bool)
