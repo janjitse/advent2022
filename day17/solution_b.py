@@ -22,8 +22,7 @@ moves = cycle(moves_list)
 blocks = cycle(blocks_list)
 highest_rock = 0
 move_idx = 0
-repeat_dict = {}
-last_five_list = deque(maxlen=5)
+pattern_dict = {}
 height_list = []
 for block_idx in range(max_range):
     block = next(blocks)
@@ -62,30 +61,27 @@ for block_idx in range(max_range):
             ] += block
             highest_rock = max(bottom_edge + block.shape[0], highest_rock)
 
-    last_five_list.append(move_idx % len(moves_list))
-    if block_idx % 5 == 0:
-        last_five_tuple = tuple(last_five_list)
-        if last_five_tuple in repeat_dict:
-            repeat_dict[last_five_tuple].append(block_idx)
-        else:
-            repeat_dict[last_five_tuple] = [block_idx]
-    # print(block_idx, block_idx % 5, highest_rock, move_idx % len(moves_list))
     height_list.append(highest_rock)
-repeater_period = 0
-for k in repeat_dict:
-    if len(repeat_dict[k]) > 1:
-        repeater_period = repeat_dict[k][-1] - repeat_dict[k][-2]
+    topn_rows = tuple(np.ravel(board[highest_rock - 14 : highest_rock + 1, :]))
+    pattern = (block_idx % 5, move_idx % len(moves_list), topn_rows)
+    if pattern in pattern_dict:
+        print(f"Repeat found at rock {block_idx}")
+        repeater_period = block_idx - pattern_dict[pattern]
+        repeat_start = pattern_dict[pattern]
+        break
+    else:
+        pattern_dict[pattern] = block_idx
 
 rocks = 1000000000000
 # rocks = 2022
+print(f"Period: {repeater_period}")
+print(f"First occurence: {repeat_start}")
 initial = rocks % repeater_period
+while initial < repeat_start:
+    initial += repeater_period
 nr_periods = (rocks - initial) // repeater_period
 
-for k in range(3):
-    value = height_list[k * repeater_period + initial]
-    print(value)
-    if k > 0:
-        diff = value - height_list[(k - 1) * repeater_period + initial]
-        print(f"diff:{diff}")
+diff = height_list[repeat_start + repeater_period] - height_list[repeat_start]
+print(f"Height increase per period: {diff}")
 
 print(diff * nr_periods + height_list[initial] - 1)
