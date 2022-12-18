@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 from collections import deque
+from typing import Deque, Tuple
 
 obsidians = []
 with open(sys.path[0] + "/input.txt", "r") as f:
@@ -21,7 +22,7 @@ for axis in range(3):
 print(total_edges)
 
 water_fill = obsidian_block.copy()
-queue = deque()
+queue: Deque[Tuple[int, ...]] = deque()
 queue.append((0, 0, 0))
 
 while queue:
