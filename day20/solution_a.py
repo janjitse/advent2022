@@ -1,9 +1,12 @@
+from __future__ import annotations
 import sys
-from collections import deque
+from typing import List, Optional
 
 
 class Node:
-    def __init__(self, value, left=None, right=None):
+    def __init__(
+        self, value: int, left: Optional[Node] = None, right: Optional[Node] = None
+    ):
         self.value = value
         self.left = left
         self.right = right
@@ -12,7 +15,7 @@ class Node:
 with open(sys.path[0] + "/input.txt", "r") as f:
     numbers = [int(b) for b in f.read().strip().split("\n")]
 
-queue = []
+queue: List[Node] = []
 key = 811589153
 # key = 1
 nr_iterations = 10
@@ -29,7 +32,7 @@ queue[-1].right = queue[0]
 queue_length = len(queue)
 
 
-def print_queue(queue, start_index=0):
+def print_queue(queue: List[Node], start_index: int = 0) -> None:
     to_print = []
     start = queue[start_index]
     for _ in range(len(queue)):
@@ -54,18 +57,9 @@ for i in range(nr_iterations):
             node.left = right.left
             right.left = node
             node.left.right = node
-        elif to_move < 0:
-            left = orig_left
-            for _ in range(abs(to_move)):
-                left = left.left
-            node.left = left
-            node.right = left.right
-            left.right = node
-            node.right.left = node
-    # print_queue(queue)
 
-for i, n in enumerate(queue):
-    if n.value == 0:
+for i, node in enumerate(queue):
+    if node.value == 0:
         zero_index = i
 node_c = queue[zero_index]
 
@@ -79,7 +73,6 @@ for i in range(3001):
         two_value = node_c.value
     elif i == 3000:
         three_value = node_c.value
-
     node_c = node_c.right
 
 print(one_value, two_value, three_value)
