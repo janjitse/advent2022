@@ -102,11 +102,11 @@ start_pos = (-1, 0)
 
 
 forth = search(start_pos, end_pos, 0)
-print(forth)
+print(f"Part A: {forth}")
 back = search(end_pos, start_pos, forth)
 print(back)
 and_back = search(start_pos, end_pos, back)
-print(and_back)
+print(f"Part B: {and_back}")
 
 start_time = 0
 repeater = {}
@@ -131,5 +131,5 @@ offset = (target - start_repeat) % period + 1
 
 for b, (v1, v2) in repeater.values():
     if b == offset + start_repeat:
-        print(v1 + nr_repeats * increase_per_period)
+        print(f"Part C: {v1 + nr_repeats * increase_per_period}")
         break
